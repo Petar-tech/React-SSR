@@ -1,4 +1,3 @@
-import { StaticRouter } from "react-router-dom";
 import { renderToString } from "react-dom/server";
 
 import App from "../src/App";
@@ -13,18 +12,18 @@ interface GenerateRenderStringParams {
   renderMarkup: (markup: string) => void;
 }
 
-export default function generateRenderString({
-  url,
-  redirectCb,
-  renderMarkup,
-}: GenerateRenderStringParams) {
+export default function generateRenderString(
+  params: GenerateRenderStringParams
+) {
   const context: Context = {};
 
-  const markup = renderToString(<App location={url} context={context} />);
+  const markup = renderToString(
+    <App location={params.url} context={context} />
+  );
 
   if (context.url) {
-    redirectCb(context.url);
+    params.redirectCb(context.url);
   } else {
-    renderMarkup(markup);
+    params.renderMarkup(markup);
   }
 }
