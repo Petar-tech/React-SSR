@@ -1,25 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import {
+  StaticRouter,
+  Switch,
+  Route,
+  StaticRouterProps,
+} from "react-router-dom";
 
-function App() {
+const Home = () => <h1>Home</h1>;
+const About = () => <h1>About</h1>;
+
+function App(props: StaticRouterProps) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <StaticRouter {...props}>
+      <Switch>
+        <Route exact component={Home} path="/" />
+        <Route exact component={About} path="/about" />
+      </Switch>
+    </StaticRouter>
   );
 }
 
