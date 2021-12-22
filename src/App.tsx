@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   StaticRouter,
   Switch,
@@ -6,7 +6,15 @@ import {
   StaticRouterProps,
 } from "react-router-dom";
 
-const Home = () => <h1>Home</h1>;
+const Home = () => {
+  const [count, setCount] = useState<number>(0);
+  return (
+    <>
+      <h1>{count}</h1>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+    </>
+  );
+};
 const About = () => <h1>About</h1>;
 
 function App(props: StaticRouterProps) {

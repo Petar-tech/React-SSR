@@ -1,29 +1,21 @@
-import { renderToString } from "react-dom/server";
+import { renderToStaticMarkup } from "react-dom/server";
+
+import { readFile } from "fs";
+import { join } from "path";
 
 import App from "../src/App";
 
-interface Context {
-  url?: string;
-}
+export default function (url: string, cb: (html: string) => void) {
+  const htmlDocPath = join(process.cwd(), "build", "index.html");
 
-interface GenerateRenderStringParams {
-  url: string;
-  redirectCb: (url: string) => void;
-  renderMarkup: (markup: string) => void;
-}
+  readFile(htmlDocPath, (error, buffer) => {
+    if (error) console.error(error);
 
-export default function generateRenderString(
-  params: GenerateRenderStringParams
-) {
-  const context: Context = {};
+    const markup = renderToStaticMarkup(<App location={url} />);
 
-  const markup = renderToString(
-    <App location={params.url} context={context} />
-  );
+    const doc = buffer.toString();
 
-  if (context.url) {
-    params.redirectCb(context.url);
-  } else {
-    params.renderMarkup(markup);
-  }
+    const hydratedDoc = doc.replace("{{App}}", markup);
+    cb(hydratedDoc);
+  });
 }
