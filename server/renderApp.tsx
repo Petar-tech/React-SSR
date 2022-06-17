@@ -9,7 +9,7 @@ export default function (url: string, cb: (html: string) => void) {
   const htmlDocPath = join(process.cwd(), "build", "index.html");
 
   readFile(htmlDocPath, (error, buffer) => {
-    if (error) console.error(error);
+    if (error) return console.error(error);
 
     const markup = renderToStaticMarkup(<App location={url} />);
 
